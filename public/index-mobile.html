@@ -1,0 +1,69 @@
+<!-- Mobile 2.0 -->
+<!-- phone_index -->
+<!DOCTYPE html>
+<html lang="ru-RU">
+<head>
+    <meta charset="UTF-8">
+   <!-- <meta name="viewport" content="width=device-width, user-scalable=no"> -->
+   <meta name="viewport" content="width=device-width, initial-scale=0.6, maximum-scale=1.0, user-scalable=no">
+    <title>to.radio</title>
+    <link rel="stylesheet" href="css/phone_style_b.css">
+    <link rel="icon" href="images/favicon.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>   
+    <script
+  src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
+
+</head>
+<body>
+       
+        	   
+            
+              
+    <script type="text/javascript">
+        $('*').disableSelection();
+    </script>    	
+    
+    
+	<div class="main">
+		<div class="header">
+			<div class="title"><center><h1>to.radio</h1><center/> </div>
+		  </div>
+		
+		<div class="player">
+			 <div class="cover">
+                    <div class="image">
+                        <img src="" id="cover" width="100%">
+                    </div> 
+                   
+                </div>
+             <div class="songInfo">
+                    <div class="artist" id="artist"></div>
+                    <div class="song" id="title"> </div>
+                    
+                </div>
+             <div class="footer">
+            <div class="audioButtons">
+                <img src="images/play_arrow_black_108x108.png" id="Btn" onselectstart="return false" onmousedown="return false" unselectable="on">
+                <!--<svg xmlns="http://www.w3.org/2000/svg" width="150" height=50"  viewBox="0 0 50 50"><path id="Btn" d="M8 5v14l11-7z"/></svg > -->
+                
+
+            </div>
+        	</div> 			
+		</div>
+	</div>
+
+
+
+    <script src="src/mclient4.js"></script>
+    <script src="src/mplayer_2.js"></script>
+   
+   
+   
+
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "pfm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+   "type": "git",
+   "url": "git+https://github.com/krijovnichek/toradio.git"
+  },
+  "author": "Ruslan Tyukaev",
+  "license": "ISC",
+  "homepage": "https://github.com/krijovnichek/toradio",
+
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "*",
+    "express-mobile-redirect": "^1.1.1",
+    "express-static": "^1.0.3",
+    "jsmediatags": "^3.4.0",
+    "mongoose": "3.4",
+    "request": "^2.82.0",
+    "socket.io": "*",
+    "superagent": "^3.6.0",
+    "superagent-promise-plugin": "^3.2.0"
+  }
+}

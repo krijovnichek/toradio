@@ -1,0 +1,403 @@
+/*CSS 2.0.1 */
+
+@import url('https://fonts.googleapis.com/css?family=Raleway:100i,200i,400,500,600,600i');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab:700');
+
+
+/*ECECEC*/
+
+
+::-webkit-scrollbar-button {
+background-repeat:no-repeat;
+width:8px;
+height:0px;
+-webkit-border-radius: 10px;
+border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+background-color:#1c1c1c;
+-webkit-border-radius: 10px;
+border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+-webkit-border-radius: 10px;
+border-radius: 10px;
+background-color: #212121;
+}
+
+::-webkit-scrollbar-thumb:hover{
+background-color: #757575;
+}
+
+::-webkit-resizer{
+background-image:url('');
+background-repeat:no-repeat;
+width:8px;
+height:0px
+}
+
+::-webkit-scrollbar{
+width: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Raleway', sans-serif;
+    
+}
+
+body, html {
+    height:100%;
+    font-size: 0; 
+}
+
+h1 {
+    font-family: 'Roboto Slab', serif;
+    font-size: 2em;
+    font-weight: 700;
+    font-style: normal;
+}
+
+h2 {
+    
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.4em;
+    color: white;
+    text-shadow: 2px 2px 5px black;
+    
+}
+
+#artist {
+       font-weight: 400;
+    font-style: normal;
+    font-size: 1.4em;
+    color: #222325;
+    text-shadow: 2px 2px 5px black;
+}
+
+h3 {
+    font-size: 0.9em;
+    font-weight: 100;
+    font-style: italic;
+    color: white;
+    text-shadow: 2px 2px 5px black;
+    padding-top: 5px;
+}
+
+#title {
+    font-size: 0.9em;
+    font-weight: 100;
+    font-style: italic;
+    color: white;
+    text-shadow: 2px 2px 5px black;
+    padding-top: 5px;
+}
+
+h3 {
+    font-size: 0.9em;
+    font-weight: 100;
+    font-style: italic;
+    color: white;
+    text-shadow: 2px 2px 5px black;
+    padding-top: 5px;
+}
+
+
+
+
+
+.main {
+    width: auto;
+    height: 100%;
+}
+
+.header {
+    height: 15%;
+    width: 1 vw;
+    /*height: 157px;*/
+    /*background-image: url(images/psd_01.jpg);*/
+    background-color:#ECECEC;
+    /*ackground-color: #222;*/
+        
+        
+}
+.title {
+    font-size: 15px;
+    display: inline-block;
+    padding-top: 35px;
+    /*position:absolute;*/
+    width: 100%;
+    color: #222325;
+    /*margin-top: 25px;*/
+
+}
+
+.content {
+    width: 1 vw;
+    height: 75%;
+    background-color: #ECECEC;
+}
+
+.chat {
+    vertical-align: top;
+    display: inline-block;
+    width: 30%;
+    background-color: #ECECEC;
+    /*background-color: orangered;*/
+    height: 100%;
+    
+   
+        
+}
+
+.messages {
+    padding-left: 30px;
+    height: 85%;
+    overflow-y: auto;
+    border-bottom: 1px solid #171717;
+    
+}
+
+.message {
+    display: block;
+    height: auto;
+    width: auto;
+    max-width: 400px;
+    box-sizing: border-box;
+ 
+}
+
+.message p {
+    margin: 8px 0;
+    padding: 8px 10px; 
+    border-radius: 10px;
+    background-color: #171717;
+    display: inline-block;
+    width: auto;
+    color: rgba(256, 256, 256, .7);
+    font-size: 13px;
+}
+
+.message name {
+    color: white;
+    font-weight: 600; 
+    font-style: italic;
+    padding-right: 10px;
+}
+
+.message me {
+    font-weight: 600; 
+    font-style: italic;
+    color:#5277b4;
+}
+
+
+
+.input {
+    display: block;
+    
+    height: 15%;
+    width: 100%;
+    padding-top: 20px;
+    padding-left: 30px;
+    
+}
+
+#input {
+    display: none;
+}
+
+.inputText {
+    width: 80%;
+    height: 20px;
+    background-color: #212121;
+    border-radius: 15px;
+    padding: 0 0 20px 10px;
+    /*margin-top: 2px;*/
+ 
+}
+
+textarea {
+    
+    width: 80%;
+    background-color: #212121;
+    overflow-y: hidden;
+    color: rgba(256, 256, 256, 0.5);
+    resize: none;
+    border: none;
+    outline: none;
+    padding-bottom: 10px;
+    height: 10px;
+    margin-top: 10px;
+
+}
+
+#newUserName {
+    width: 80%;
+    background-color: #212121;
+    color: rgba(256, 256, 256, 0.5);
+    border: none;
+    outline: none;
+    padding-bottom: 10px;
+    height: 10px;
+    margin-top: 10px;  
+}
+
+.input .name {
+    background-color: #212121;
+    width: 70px;
+    height: 4px;
+    border-radius: 15px 15px 0 0;
+    border: none;
+    outline: none;
+    padding: 10px;
+    color: rgba(256, 256, 256, 0.5);
+    resize: none;
+    font-weight: bold;
+}
+
+.input ::-webkit-input-placeholder {
+    font-weight: normal;
+    color: rgba(256, 256, 256, 0.2);
+    font-style: italic;
+    padding-top: 0px;
+}
+
+#userNameInput ::-webkit-input-placeholder {
+    padding-top: 0;
+}
+
+
+
+.button {
+    width: 20%;
+    vertical-align: top;
+    color: white;
+    display: inline-block;
+    background-color: #1a1a1a;
+    padding: 12px 21px;
+    border: none;
+    outline: none;
+    border-radius: 0 15px 15px 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.button:hover {
+    filter: invert(.1);
+    transition-duration: .2s;
+}
+
+
+.player{
+    vertical-align: top;
+    display: inline-block;
+    width: 40%;
+    height: 100%;
+    background-color: #ECECEC;
+    /*background-color: red;*/
+    padding: 0;
+    margin: 0;
+    color: white;
+    font-size: 15px; 
+}
+
+
+
+.cover {
+    padding-top: 100px;
+    width: 100%;
+}
+
+.image {
+    width: 372px;
+    height: auto;   
+    margin: 0 auto;
+    border: none;
+}
+
+.image img {
+    display: block;
+    margin: 0 auto;
+    border-radius: 60%;
+}
+
+.image img:hover {
+    filter:grayscale(85%);    
+    transition-duration: 0.5s;
+}
+
+.songInfo {
+    padding-top: 25px;
+    width: 100%;
+    text-align: center;
+}
+
+
+.socialLinks{
+    vertical-align: top;
+    padding: 0;
+    display: inline-block;
+    width: 30%;
+    height: 100%;
+    /*background-color: orangered;*/
+    margin: 0;
+}
+
+.footer {
+    width: 1 vw;
+    height: 10%;
+    background-color: #222;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1c1c1c+0,1e1e1e+50,1c1c1c+100 */
+    background: #1c1c1c; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ECECEC 0%, #EdEdEd 50%, #ECECEC 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  #ECECEC 0%,#EdEdEd 50%,#ECECEC 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  #ECECEC 0%,#2EdEdEd 50%,#ECECEC 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ECECEC', endColorstr='#1c1c1c',GradientType=0 ); /* IE6-9 */
+
+}
+
+.footer img {
+    padding: 25px 0 0 0;
+    display: block;
+    margin: 0 auto;
+    width: 2%;
+    cursor: pointer;
+    
+}
+
+#playBtn {
+    /*border: red solid;*/
+}
+
+.footer img:hover {
+    filter:brightness(1.8);    
+    transition-duration: 0.5s; 
+     
+    
+}
+
+
+
+.footer img:active {
+    padding: 25px 0 0 0;
+    display: block;
+    margin: 0 auto;
+    width: 1.9%;
+    
+    
+}
+
+
+
+
+
+
+
+
+
