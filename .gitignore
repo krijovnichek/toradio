@@ -3,3 +3,6 @@
 /package-lock.json
 /npm-debug*
 /last
+public/mobile
+public/index-mobile.html.copy
+public/test*
