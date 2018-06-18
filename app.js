@@ -62,6 +62,12 @@ app.get('/test', function(req, res){
 	res.sendFile(__dirname + '/public/test.html');
 });
 
+app.get('/404', function(req, res){
+  res.sendFile(__dirname + '/public/404.html');
+});
+
+
+
 
 
 
@@ -101,6 +107,11 @@ app.get('/update', function(req, res){
 app.get('/getInfo', function(req, res){
 	res.send(songInfo);
 	res.sendStatus(200);
+});
+
+
+app.get('*', function(req, res){
+  res.redirect('/404');
 });
 
 

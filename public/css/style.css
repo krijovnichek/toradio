@@ -502,7 +502,23 @@ textarea {
     
 }
 
+.error {
+    padding-top: 50px;
+    height: 100px;
+    width: 50%;
+    margin: 0 auto;
+    font-size: 20px;
+    color: #fff;
+    text-align: center;
 
+}
 
+.error h1 {
+    font-size: 20px;
+}
 
+.error h2 { 
+    padding: 10px; 
+    font-family: 'Roboto Slab', serif;
+}
 
