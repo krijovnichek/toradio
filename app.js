@@ -236,7 +236,7 @@ app2.use(ua.is_tablet()); // Detects tablets and sets req.is_tablet
 app2.use(express.static(__dirname + '/public'));
 // app2.use(express.static(path.join(__dirname, 'public')))
 app2.get('/', function(req, res) {
-        return res.sendFile(__dirname + '/public/beta_index-mobile.html');
+        return res.sendFile(__dirname + '/public/index-mobile.html');
 });
 
 
