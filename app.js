@@ -22,7 +22,10 @@ var util = require('util');
 var coverUrl;
 
 
+
+//TODO KEY
 // var key = config.key();
+var key = 'testkey';
 var art;
 var song;
 
@@ -74,7 +77,7 @@ app.get('/404', function(req, res){
 //Отправка songInfo
 app.get('/update', function(req, res){
 	console.log(req.query);
-	if (req.query.key == key) {
+	if (req.query.key === key) {
 		song_len = req.query.seconds;
 		songInfo = {
 			artist: req.query.artist, title: req.query.title
