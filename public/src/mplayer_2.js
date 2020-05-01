@@ -8,7 +8,7 @@ $(function(){
     var $music = $('.music');
     var $chat = $('.chat');
     var audio = new Audio();
-    var stream = 'http://46.17.43.79:8000/stream';
+    var stream = 'http://194.67.113.125:8000/stream';
     var play = false;
     
     var startHandler = $Btn.ontouchstart;
