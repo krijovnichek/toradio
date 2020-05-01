@@ -26,9 +26,9 @@ var coverUrl;
 var art;
 var song;
 
-
-// app.use(ua.mobileredirect('http://toradio.xyz/m'));
-// app.use(ua.tabletredirect('http://toradio.xyz/m', true)); //true
+var mobile_address = 'http://194.67.113.125:3001'
+app.use(ua.mobileredirect(mobile_address));
+app.use(ua.tabletredirect(mobile_address, true)); //true
 
 regUsers = [
 	{name: "rooz", password: "qwerty"},
