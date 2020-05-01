@@ -7,13 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-   "type": "git",
-   "url": "git+https://github.com/krijovnichek/toradio.git"
+    "type": "git",
+    "url": "git+https://github.com/krijovnichek/toradio.git"
   },
   "author": "Ruslan Tyukaev",
   "license": "ISC",
   "homepage": "https://github.com/krijovnichek/toradio",
-
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "*",

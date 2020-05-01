@@ -10,7 +10,7 @@ var io2 = require('socket.io').listen(server2);
 var mongoose = require('mongoose');
 var url = require('url');
 var fs = require('fs');
-var config = require('./config.js'); 
+// var config = require('./config.js'); 
 var songInfo;
 var song_len;
 var request = require('request');
@@ -22,7 +22,7 @@ var util = require('util');
 var coverUrl;
 
 
-var key = config.key();
+// var key = config.key();
 var art;
 var song;
 
