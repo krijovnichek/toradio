@@ -246,8 +246,10 @@ app2.get('/', function(req, res) {
 
 app2.get('/update', function(req, res){
 	if (req.query.key == key) {
+
 		song_len = req.query.seconds;
 		songInfo = {artist: req.query.artist, title: req.query.title};
+		console.log(songInfo);
 		res.sendStatus(200);
 		try{
 			setTimeout(function(){
