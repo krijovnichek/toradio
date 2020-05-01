@@ -198,7 +198,7 @@ function getCover(artist, title) {
 				console.log('URL: ' +  coverUrl);
 
 					try {
-						var file = fs.createWriteStream("/var/www/data/site1/public/images/artwork.png");
+						var file = fs.createWriteStream("/var/www/radio/toradio/public/images/artwork.png");
 						var request = https.get(coverUrl, function(response) {
 						  response.pipe(file);
 						  console.log("File created")
