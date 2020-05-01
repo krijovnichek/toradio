@@ -19,7 +19,7 @@
     "express-mobile-redirect": "^1.1.1",
     "express-static": "^1.0.3",
     "jsmediatags": "^3.4.0",
-    "mongoose": "3.4",
+    "mongoose": "5.9",
     "request": "^2.82.0",
     "socket.io": "*",
     "superagent": "^3.6.0",
