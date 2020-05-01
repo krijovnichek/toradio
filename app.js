@@ -22,14 +22,13 @@ var util = require('util');
 var coverUrl;
 
 
-
 // var key = config.key();
 var art;
 var song;
 
 
-app.use(ua.mobileredirect('http://toradio.xyz/m'));
-app.use(ua.tabletredirect('http://toradio.xyz/m', true)); //true
+// app.use(ua.mobileredirect('http://toradio.xyz/m'));
+// app.use(ua.tabletredirect('http://toradio.xyz/m', true)); //true
 
 regUsers = [
 	{name: "rooz", password: "qwerty"},
