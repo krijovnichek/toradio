@@ -23,7 +23,7 @@ $(function(){
     
             $("#newMessage").keyup(function(event)
             {
-                if(event.keyCode == 13)
+                if(event.keyCode === 13)
                     {
                         event.preventDefault();
                         if($newMessage.val().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"))

@@ -5,7 +5,7 @@ $(function(){
 
     var $Btn = $('#Btn');
     var audio = new Audio();
-    var stream = 'http://46.17.43.79/radio/live';
+    var stream = 'http://194.67.113.125:8000/stream';
        
     
     var play = false;

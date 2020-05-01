@@ -29,7 +29,7 @@ var key = 'testkey';
 var art;
 var song;
 
-var mobile_address = 'http://194.67.113.125:3001'
+var mobile_address = 'http://194.67.113.125:3001';
 app.use(ua.mobileredirect(mobile_address));
 app.use(ua.tabletredirect(mobile_address, true)); //true
 
