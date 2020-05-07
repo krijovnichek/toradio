@@ -1,35 +1,35 @@
-var express = require( 'express' );
-var ua = require ('express-mobile-redirect');
-var	bodyParser = require('body-parser');
-var	app = express();
-var app2 = express();
-var	server = require('http').createServer(app);
-var	server2 = require('http').createServer(app2);
-var	io = require('socket.io').listen(server);
-var io2 = require('socket.io').listen(server2);
-var mongoose = require('mongoose');
-var url = require('url');
-var fs = require('fs');
-// var config = require('./config.js'); 
-var songInfo;
-var song_len;
-var request = require('request');
-var http = require('http');
-var https = require('https');
-var request = require('superagent');
-var superagentPromisePlugin = require('superagent-promise-plugin');
-var util = require('util');
-var coverUrl;
-
+const express = require('express');
+const ua = require('express-mobile-redirect');
+const bodyParser = require('body-parser');
+const app = express();
+const app2 = express();
+const server = require('http').createServer(app);
+const server2 = require('http').createServer(app2);
+const io = require('socket.io').listen(server);
+const io2 = require('socket.io').listen(server2);
+const mongoose = require('mongoose');
+let url = require('url');
+const fs = require('fs');
+const config = require('./config.json');
+const public_config = require('./config.json');
+let songInfo;
+let song_len;
+let request = require('request');
+const http = require('http');
+const https = require('https');
+request = require('superagent');
+const superagentPromisePlugin = require('superagent-promise-plugin');
+const util = require('util');
+let coverUrl;
 
 
 //TODO KEY
 // var key = config.key();
-var key = 'testkey';
+var key = config.secret_key;
 var art;
 var song;
 
-var mobile_address = 'http://194.67.113.125:3001';
+var mobile_address = config.mobile_host+config.mobile_port;
 app.use(ua.mobileredirect(mobile_address));
 app.use(ua.tabletredirect(mobile_address, true)); //true
 
@@ -41,8 +41,8 @@ regUsers = [
 users = [];
 connections = [];
 
-server.listen(process.env.PORT || 3000, function(){
-	console.log('Start listening 3000...');
+server.listen(process.env.PORT || public_config.port, function(){
+	console.log('Start listening ' + public_config.host + ':' + +public_config.port);
 } );
 
 
@@ -57,7 +57,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res){
 
-	res.sendFile(__dirname + '/public/index-desktop.html');
+	res.sendFile(__dirname + '/public/index.html');
 });
 
 app.get('/test', function(req, res){
@@ -232,7 +232,7 @@ function getCover(artist, title) {
 //APP2 HERE
 
 server2.listen(process.env.PORT || 3001, function(){
-	console.log('Start listening 3001...');
+	console.log('Start listening '+ config.mobile_port +'...');
 } );
 app2.use(ua.is_mobile()); // Detects mobiles and sets req.is_mobile 
 app2.use(ua.is_tablet()); // Detects tablets and sets req.is_tablet 
@@ -245,7 +245,7 @@ app2.get('/', function(req, res) {
 
 
 app2.get('/update', function(req, res){
-	if (req.query.key == key) {
+	if (req.query.key === key) {
 
 		song_len = req.query.seconds;
 		songInfo = {artist: req.query.artist, title: req.query.title};
@@ -268,7 +268,7 @@ app2.get('/update', function(req, res){
 	
 	else {
 		res.sendStatus(403);
-	};
+	}
 
 });
 
