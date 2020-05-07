@@ -1,7 +1,6 @@
 // CLIENT 2.0
 
 $(function(){
-    // const config = require('./public_config.json');
     const socket = io.connect();
     const $input = $('#input');
     const $newMessage = $('#newMessage');
@@ -72,29 +71,29 @@ $(function(){
     // Вставмяем имя в текст плейсхолдера сообщения
     $('#newMessage').attr("placeholder", $newUN.val() + ", напишите что-нибудь");
 
-    })
+    });
 
     // Выводим сообщение в чат
     socket.on('new message', function(data) {
 
-        $messages.append('<div class="message"><img src="/images/upic100_'+getRandomInt(1, 7)+'.png" width="50" height="50"><p><name>'+data.user+':</name><br>'+data.msg+'</p></div>');
+        $messages.append('<div class="message"><img src="/images/upic100_'+getRandomInt(1, 7)+'.png" width="50" height="50" alt=""><p><name>'+data.user+':</name><br>'+data.msg+'</p></div>');
         autoscroll();
 
     });
 
     socket.on('loadOldMessages', function(docs){
-        for (var i=docs.length-1; i>=0; i--)
+        for (let i=docs.length-1; i>=0; i--)
             {
                 $messages.append('<div class="message hyphenate"><img src="/images/upic100_'+getRandomInt(1, 7)+'.png" width="50" height="50"><p><name>'+docs[i].user+':</name><br>'+docs[i].msg+'</p></div>');
                 autoscroll();
-            };
+            }
 
     });
 
     //Обновление информации о песнях
     socket.on('infoUpdate', function(songInfo){
 
-        if (i == false) {
+        if (i === false) {
             time = 0;
         }
         else {
@@ -102,7 +101,7 @@ $(function(){
         }
         setTimeout(function(){
             $artist.text(songInfo.artist);
-            if (songInfo.artist == 'Реклама') {
+            if (songInfo.artist === 'Реклама') {
                 isAdv=true;
             }
             else { isAdv=false }

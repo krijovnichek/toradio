@@ -194,13 +194,13 @@ h3 {
     /*height: 157px;*/
     /*background-image: url(images/psd_01.jpg);*/
     /* background-color:#222; */
-    background-color: #222;
+    background-color: #111;
 }
 
 .title {
     font-size: 15px;
     display: inline-block;
-    padding-top: 35px;
+    padding-top: 50px;
     /*position:absolute;*/
     width: 100%;
     color: white;
@@ -230,9 +230,9 @@ h3 {
 
 .messages {
     padding-left: 30px;
-    height: 103%;
+    height: 100%;
     overflow-y: auto;
-    border-bottom: 1px solid #171717;
+    /*border-bottom: 1px solid #171717;*/
 
     
 }
@@ -284,7 +284,7 @@ h3 {
     
     /*height: 15%;*/
     width: 100%;
-    /*padding-top: 20px;*/
+    padding-top: 20px;
     /*padding-left: 30px;*/
     
 }
@@ -296,28 +296,21 @@ h3 {
 .inputText {
     width: 97.5%;
     height: 50px;
-    /* background-color: #222; */
-
-
-    background-color: #222;
-    /*border-radius: 15px;*/
+    background-color: #111;
     padding: 0 0 0 10px;
-    /*margin-top: 2px;*/
- 
+
 }
 
 textarea {
     
     width: 80%;
-    background-color: #222;
-    /* background-color: #222; */
+    background-color: #111;
     overflow-y: hidden;
     color: rgba(256, 256, 256, 0.5);
     resize: none;
     border: none;
     outline: none;
     padding-bottom: 10px;
-    height: 10px;
     margin-top: 10px;
 
 }
@@ -325,7 +318,7 @@ textarea {
 #newUserName {
     width: 80%;
     /* background-color: #222; */
-    background-color: #222;
+    background-color: #111;
     color: rgba(256, 256, 256, 0.5);
     border: none;
     outline: none;
@@ -381,6 +374,9 @@ textarea {
     transition-duration: .2s;
 }
 
+.audioButtons {
+    padding-top: 30px;
+}
 
 .player{
     vertical-align: top;
@@ -439,7 +435,7 @@ textarea {
 
 .footer {
     height: 10%;
-    background-color: #222;
+    background-color: #111;
 
 
 }

@@ -8,6 +8,7 @@ const server2 = require('http').createServer(app2);
 const io = require('socket.io').listen(server);
 const io2 = require('socket.io').listen(server2);
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 let url = require('url');
 const fs = require('fs');
 const config = require('./config.json');
@@ -23,13 +24,11 @@ const util = require('util');
 let coverUrl;
 
 
-//TODO KEY
-// var key = config.key();
-var key = config.secret_key;
-var art;
-var song;
+const key = config.secret_key;
+let art;
+let song;
 
-var mobile_address = config.mobile_host+config.mobile_port;
+const mobile_address = config.mobile_host+config.mobile_port;
 app.use(ua.mobileredirect(mobile_address));
 app.use(ua.tabletredirect(mobile_address, true)); //true
 
@@ -120,20 +119,48 @@ app.get('*', function(req, res){
 
 
 
-var chatSchema = mongoose.Schema ({
+const chatSchema = mongoose.Schema ({
 	user: String,
 	msg: String,
 	created: {type: Date, default: Date.now}
 });
 
-var userSchema = mongoose.Schema ({
-	login: {type: String, unique: true, index: true},
-	password: String,
-	registrationDate: {type: Date, default: Date.now}
+const userSchema = mongoose.Schema ({
+	nickname: String,
+	email: {
+		type: String,
+		required: 'Укажите e-mail',
+		unique: 'Такой e-mail уже существует'
+	},
+	passwordHash: String,
+	salt: String,
+}, {
+	timestamps: true
 });
+userSchema.virtual('password')
+	.set(function (password) {
+		this._plainPassword = password;
+		if (password) {
+			this.salt = crypto.randomBytes(128).toString('base64');
+			this.passwordHash = crypto.pbkdf2Sync(password, this.salt, 1, 128, 'sha1');
+		} else {
+			this.salt = undefined;
+			this.passwordHash = undefined;
+		}
+	})
+	.get (function () {
+		return this._plainPassword;
+	});
+	userSchema.methods.checkPassword = function (password) {
+		if (!password) return false;
+		if (!this.passwordHash) return false;
+		return crypto.pbkdf2Sync(password, this.salt, 1, 128, 'sha1') === this.passwordHash;
+};
+
+const User = mongoose.model('User', userSchema);
 
 
-var Chat = mongoose.model('Message', chatSchema);
+const Chat = mongoose.model('Message', chatSchema);
 
 io.sockets.on('connection', function(socket){
 	var query = Chat.find({});
