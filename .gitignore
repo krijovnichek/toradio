@@ -1,5 +1,5 @@
 /node_modules
-/config.js
+/config.json
 /package-lock.json
 /npm-debug*
 /last
@@ -16,3 +16,4 @@ public/css/style_b.css
 *copy*
 .well*
 /*acme-*
+public/images/artwork.png

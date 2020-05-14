@@ -246,9 +246,9 @@ function getCover(artist, title) {
 
 			}
 		
-     })
+     });
      return coverUrl;
- };
+ }
 
 
 
@@ -258,7 +258,7 @@ function getCover(artist, title) {
 
 //APP2 HERE
 
-server2.listen(process.env.PORT || 3001, function(){
+server2.listen(process.env.PORT || public_config.mobile_port, function(){
 	console.log('Start listening '+ config.mobile_port +'...');
 } );
 app2.use(ua.is_mobile()); // Detects mobiles and sets req.is_mobile 
