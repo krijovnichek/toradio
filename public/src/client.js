@@ -1,5 +1,6 @@
 // CLIENT 2.0
 
+
 $(function(){
     const socket = io.connect();
     const $input = $('#input');
