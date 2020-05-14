@@ -1,4 +1,13 @@
 // CLIENT 2.0
+function check ( )
+{   
+
+    // console.log(x);  
+        window.location.href = "https://www.google.com";
+        // console
+    
+}
+
 
 $(function(){
     const socket = io.connect();
