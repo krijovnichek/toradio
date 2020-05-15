@@ -59,10 +59,6 @@ app.get('/', function(req, res){
 	res.sendFile(__dirname + '/public/index.html');
 });
 
-app.get('/test', function(req, res){
-
-	res.sendFile(__dirname + '/public/test.html');
-});
 
 app.get('/404', function(req, res){
   res.sendFile(__dirname + '/public/404.html');
