@@ -199,8 +199,12 @@ h3 {
 
 .title {
     font-size: 15px;
-    display: inline-block;
-    padding-top: 50px;
+    display: block;
+    position: absolute;
+    top: 7%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /*padding-top: 50px;*/
     /*position:absolute;*/
     width: 100%;
     color: white;
@@ -367,6 +371,19 @@ textarea {
     cursor: pointer;
     -webkit-user-select: none;
     user-select: none;
+}
+
+.dj {
+    display: block;
+    width: 15%;
+    position: absolute;
+    top: 7%;
+    left: 95%;
+    transform: translate(-67%, -50%);
+}
+
+#dj {
+    width: 50%;
 }
 
 .button:hover {
