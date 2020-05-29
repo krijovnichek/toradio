@@ -76,18 +76,20 @@ $(function(){
 
     // Выводим сообщение в чат
     socket.on('new message', function(data) {
+        console.log(data.upicURL);
+        console.log(data.user);
 
-        $messages.append('<div class="message"><img src="/images/upic100_'+getRandomInt(1, 7)+'.png" width="50" height="50" alt=""><p><name>'+data.user+':</name><br>'+data.msg+'</p></div>');
+        $messages.append('<div class="message"><img src=' + data.upicURL + ' width="50" height="50" alt=""><p><name>' + data.user + ':</name><br>' + data.msg + '</p></div>');
         autoscroll();
 
     });
 
     socket.on('loadOldMessages', function(docs){
-        for (let i=docs.length-1; i>=0; i--)
-            {
-                $messages.append('<div class="message hyphenate"><img src="/images/upic100_'+getRandomInt(1, 7)+'.png" width="50" height="50"><p><name>'+docs[i].user+':</name><br>'+docs[i].msg+'</p></div>');
-                autoscroll();
-            }
+        for (let i=docs.length-1; i>=0; i--) {
+            // console.log(docs[i].upicURL);
+            $messages.append('<div class="message hyphenate"><img src=' + docs[i].upicURL + ' width="50" height="50"><p><name>' + docs[i].user + ':</name><br>' + docs[i].msg + '</p></div>');
+            autoscroll();
+        }
 
     });
 
@@ -147,12 +149,12 @@ $(function(){
              //автоскролл на дно
             function autoscroll(){
                 document.getElementById('messages').scrollTop=5550;
-            };
+            }
 
             function getInfo(){
                 $(document).get('/getInfo', function(data) {
-                });   
-            };  
+                });
+            }
 
             function getCover(){
                 cover.src = 'images/artwork.png';
@@ -167,8 +169,8 @@ $(function(){
                 cover.onerror = function(){
                     $cover.attr('src', 'images/default.png');
                 };
-            
-            };
+
+            }
 
 
 
