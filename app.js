@@ -117,6 +117,7 @@ app.get('*', function(req, res){
 
 const chatSchema = mongoose.Schema ({
 	user: String,
+	upicURL: String,
 	msg: String,
 	created: {type: Date, default: Date.now}
 });
@@ -128,6 +129,7 @@ const userSchema = mongoose.Schema ({
 		required: 'Укажите e-mail',
 		unique: 'Такой e-mail уже существует'
 	},
+	upicString: String,
 	passwordHash: String,
 	salt: String,
 }, {
@@ -158,21 +160,20 @@ const User = mongoose.model('User', userSchema);
 
 const Chat = mongoose.model('Message', chatSchema);
 
-io.sockets.on('connection', function(socket){
-	var query = Chat.find({});
+io.sockets.on('connection', function(socket) {
+	const user = User.find({});
+	const query = Chat.find({});
 	query.sort('-created').limit(20).exec(function (err, docs) {
 		if (err) {
 			throw err;
-		}
-		else {
+		} else {
 			socket.emit('loadOldMessages', docs);
 			try {
 				socket.emit('infoUpdate', {artist: songInfo.artist, title: songInfo.title});
-			}
-			catch (err) {
+			} catch (err) {
 				console.log(err);
-			};
-		};
+			}
+		}
 	connections.push(socket);
 	console.log('Connected. %s sockets connected', connections.length);
 });
@@ -184,16 +185,27 @@ socket.on('disconnect', function(data){
 });
 
 	//Send Message
-	socket.on('send message', function(data){
-		var newMsg = new Chat ({msg: data.text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"), user: data.user.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") });
-		newMsg.save(function(err){
+	socket.on('send message', function(data) {
+		var newMsg = new Chat({
+			msg: data.text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+			user: data.user.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+			upicURL: "/images/upic100_5.png"
+		});
+
+		newMsg.save(function (err) {
 			if (err) {
 				console.log(err);
+			} else {
+				socket.broadcast.emit('new message', {
+					msg: data.text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+					user: data.user.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+					upicURL: "/images/upic100_5.png"
+				});
+				socket.emit('new message', {
+					msg: data.text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+					user: '<me>' + data.user.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") + '</me>'
+				});
 			}
-			else {
-			socket.broadcast.emit('new message',{msg: data.text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"), user: data.user.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")});
-			socket.emit('new message', {msg: data.text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"), user: '<me>'+data.user.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")+'</me>'});
-			};
 		});
 	});
 	
