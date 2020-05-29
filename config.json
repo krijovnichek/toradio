@@ -7,5 +7,5 @@
   "r_port": 8000,
   "mount": "/stream",
 
-  "secret_key" : "secret"
+  "secret_key": "testkey"
 }

@@ -1,11 +1,11 @@
 // PLAYER 2.0
 const Btn = document.getElementById('playBtn');
 let audio = new Audio();
-let stream = "http://194.67.113.125:8000/stream";
+// let stream = "http://194.67.113.125:8000/stream"; //SERVER
+let stream = "http://localhost:8000/stream"; //LOCALHOST
 
 
-
-function ready () {
+function ready() {
 
 }
 
@@ -22,6 +22,8 @@ function playClick() {
     audio.src = stream;
     Btn.setAttribute("src", "images/stop.png");
     // Логика плеера
+
+
     let playPromise = audio.play();
     if (playPromise !== undefined) {
         playPromise.then(function() {
