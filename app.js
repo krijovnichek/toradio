@@ -1,6 +1,7 @@
 const express = require('express');
 const ua = require('express-mobile-redirect');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const app = express();
 const app2 = express();
 const server = require('http').createServer(app);
@@ -22,46 +23,129 @@ request = require('superagent');
 const superagentPromisePlugin = require('superagent-promise-plugin');
 const util = require('util');
 let coverUrl;
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
+
+let User = require('./db/models/user');
+
+
+const chatSchema = mongoose.Schema({
+	user: String,
+	upicURL: String,
+	msg: String,
+	test: String,
+	created: {type: Date, default: Date.now}
+});
+
+const UserSchema = mongoose.Schema({
+	username: String,
+	email: {
+		type: String,
+		required: 'Укажите e-mail',
+		unique: 'Такой e-mail уже существует'
+	},
+	upicString: String,
+	test: String,
+	passwordHash: String,
+	salt: String,
+}, {
+	timestamps: true
+});
+
+
+const Chatter = mongoose.model('User', UserSchema);
+
+
+const Chat = mongoose.model('Message', chatSchema);
+let controllers = require('./controllers');
+// const api = require('./api.js');
+
+const session = require('express-session');
 
 
 const key = config.secret_key;
 let art;
 let song;
 
-const mobile_address = config.mobile_host+config.mobile_port;
+const mobile_address = config.mobile_host + config.mobile_port;
 app.use(ua.mobileredirect(mobile_address));
 app.use(ua.tabletredirect(mobile_address, true)); //true
 
-regUsers = [
-	{name: "rooz", password: "qwerty"},
-	{name: "lalera", password: "qwerty"}
-];
+
+app.use(cookieParser());
+app.use(session({secret: 'SECRET'}));
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+
+// Passport:
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+passport.use(new LocalStrategy({
+	usernameField: 'email',
+	passwordField: 'password'
+}, function (username, password, done) {
+	User.findOne({username: username}, function (err, user) {
+		return err
+			? done(err)
+			: user
+				? password === user.password
+					? done(null, user)
+					: done(null, false, {message: 'Incorrect password.'})
+				: done(null, false, {message: 'Incorrect username.'});
+	});
+}));
+
+passport.serializeUser(function (user, done) {
+	done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+	User.findById(id, function (err, user) {
+		err
+			? done(err)
+			: done(null, user);
+	});
+});
+
 
 users = [];
 connections = [];
 
-server.listen(process.env.PORT || public_config.port, function(){
+server.listen(process.env.PORT || public_config.port, function () {
 	console.log('Start listening ' + public_config.host + ':' + +public_config.port);
-} );
+});
 
 
 // Коннектимся к БД
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/chat', function(err){
-	if (err) console.log (err);
-		console.log('Conneced to MongoDB');
-});
+
 
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function(req, res){
+app.post('/login', controllers.login);
+app.get('/register', controllers.register);
+app.get('/newuser', controllers.newuser);
+app.get('/logout', controllers.logout);
+app.all('private', mustAuthenticatedMw);
+app.all('private/*', mustAuthenticatedMw);
 
-	res.sendFile(__dirname + '/public/index.html');
+function mustAuthenticatedMw(req, res, next) {
+	req.isAuthenticated()
+		? next()
+		: res.redirect('/');
+}
+
+app.get('/', controllers.index);
+
+app.get('/private', function (req, res) {
+	res.sendFile(__dirname + '/public/private.html');
 });
 
-
-app.get('/404', function(req, res){
-  res.sendFile(__dirname + '/public/404.html');
+app.get('/404', function (req, res) {
+	res.sendFile(__dirname + '/public/404.html');
 });
 
 
@@ -98,7 +182,7 @@ app.get('/update', function(req, res){
 		res.sendStatus(403);
 		console.log("Попытка внести некорректные данные");
 		console.log(req.query.key);
-	};
+	}
 
 });
 
@@ -107,6 +191,9 @@ app.get('/getInfo', function(req, res){
 	res.sendStatus(200);
 });
 
+app.get('/reg', function (req, res) {
+	res.sendFile(__dirname + '/public/login.html');
+});
 
 app.get('*', function(req, res){
   res.redirect('/404');
@@ -115,54 +202,11 @@ app.get('*', function(req, res){
 
 
 
-const chatSchema = mongoose.Schema ({
-	user: String,
-	upicURL: String,
-	msg: String,
-	created: {type: Date, default: Date.now}
-});
-
-const userSchema = mongoose.Schema ({
-	nickname: String,
-	email: {
-		type: String,
-		required: 'Укажите e-mail',
-		unique: 'Такой e-mail уже существует'
-	},
-	upicString: String,
-	passwordHash: String,
-	salt: String,
-}, {
-	timestamps: true
-});
-userSchema.virtual('password')
-	.set(function (password) {
-		this._plainPassword = password;
-		if (password) {
-			this.salt = crypto.randomBytes(128).toString('base64');
-			this.passwordHash = crypto.pbkdf2Sync(password, this.salt, 1, 128, 'sha1');
-		} else {
-			this.salt = undefined;
-			this.passwordHash = undefined;
-		}
-	})
-	.get (function () {
-		return this._plainPassword;
-	});
-	userSchema.methods.checkPassword = function (password) {
-		if (!password) return false;
-		if (!this.passwordHash) return false;
-		return crypto.pbkdf2Sync(password, this.salt, 1, 128, 'sha1') === this.passwordHash;
-};
-
-const User = mongoose.model('User', userSchema);
-
-
-const Chat = mongoose.model('Message', chatSchema);
 
 io.sockets.on('connection', function(socket) {
-	const user = User.find({});
+	const user = Chat.find({});
 	const query = Chat.find({});
+
 	query.sort('-created').limit(20).exec(function (err, docs) {
 		if (err) {
 			throw err;
@@ -189,7 +233,8 @@ socket.on('disconnect', function(data){
 		var newMsg = new Chat({
 			msg: data.text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
 			user: data.user.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
-			upicURL: "/images/upic100_5.png"
+			upicURL: "/images/upic100_5.png",
+			test: "ТЕСТ"
 		});
 
 		newMsg.save(function (err) {
@@ -199,7 +244,8 @@ socket.on('disconnect', function(data){
 				socket.broadcast.emit('new message', {
 					msg: data.text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
 					user: data.user.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
-					upicURL: "/images/upic100_5.png"
+					upicURL: "/images/upic100_5.png",
+					test: "ТЕСТ1"
 				});
 				socket.emit('new message', {
 					msg: data.text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
