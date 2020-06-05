@@ -9,7 +9,8 @@ exports.createUser = function (userData) {
     let user = {
         username: userData.username,
         email: userData.email,
-        password: hash(userData.password)
+        // password: userData.password
+        password: hash(userData.password) //                         TODO Включить HASH
     };
     console.log(user);
     return new User(user).save()
@@ -19,18 +20,22 @@ exports.getUser = function (id) {
     return User.findOne(id)
 };
 
-exports.checkUser = function (userData) {
-    return User
-        .findOne({email: userData.email})
-        .then(function (doc) {
-            if (doc.password === hash(userData.password)) {
-                console.log("User password is ok");
-                return Promise.resolve(doc)
-            } else {
-                return Promise.reject("Error wrong")
-            }
-        })
+
+exports.checkUser = async function (userData) {
+    const user = await User.findOne({username: userData.login});
+    console.log(user);
+    console.log("24 string done!");
+    // console.log(userData.password);
+    if (user.password === hash(userData.password)) {
+        console.log("User password is ok");
+        return user
+    } else {
+        console.log("Wrong pass 32");
+        return user
+    }
+
 };
+
 
 function hash(text) {
     return crypto.createHash('sha1')

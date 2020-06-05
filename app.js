@@ -25,7 +25,8 @@ const util = require('util');
 let coverUrl;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-
+let session = require('express-session')
+const MongoStore = require('connect-mongo')(session);
 
 let User = require('./db/models/user');
 
@@ -61,7 +62,6 @@ const Chat = mongoose.model('Message', chatSchema);
 let controllers = require('./controllers');
 // const api = require('./api.js');
 
-const session = require('express-session');
 
 
 const key = config.secret_key;
@@ -73,43 +73,17 @@ app.use(ua.mobileredirect(mobile_address));
 app.use(ua.tabletredirect(mobile_address, true)); //true
 
 
-app.use(cookieParser());
-app.use(session({secret: 'SECRET'}));
-
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-
-// Passport:
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-passport.use(new LocalStrategy({
-	usernameField: 'email',
-	passwordField: 'password'
-}, function (username, password, done) {
-	User.findOne({username: username}, function (err, user) {
-		return err
-			? done(err)
-			: user
-				? password === user.password
-					? done(null, user)
-					: done(null, false, {message: 'Incorrect password.'})
-				: done(null, false, {message: 'Incorrect username.'});
-	});
+app.use(session({
+	secret: 'secret',
+	resave: false,
+	saveUninitialized: false,
+	// Место хранения можно выбрать из множества вариантов, это и БД и файлы и Memcached.
+	store: new MongoStore({
+		url: 'mongodb://localhost:27017/users',
+	})
 }));
 
-passport.serializeUser(function (user, done) {
-	done(null, user.id);
-});
 
-passport.deserializeUser(function (id, done) {
-	User.findById(id, function (err, user) {
-		err
-			? done(err)
-			: done(null, user);
-	});
-});
 
 
 users = [];
@@ -125,10 +99,12 @@ server.listen(process.env.PORT || public_config.port, function () {
 
 app.use(express.static(__dirname + '/public'));
 
-app.post('/login', controllers.login);
-app.get('/register', controllers.register);
+app.get('/login', controllers.login);
+// app.post('/register', controllers.register);checkUser
 app.get('/newuser', controllers.newuser);
-app.get('/logout', controllers.logout);
+app.get('/checkUser', controllers.checkUser);
+app.get('/logout', controllers.logout)
+app.get('/test', controllers.test);
 app.all('private', mustAuthenticatedMw);
 app.all('private/*', mustAuthenticatedMw);
 
@@ -138,7 +114,16 @@ function mustAuthenticatedMw(req, res, next) {
 		: res.redirect('/');
 }
 
-app.get('/', controllers.index);
+// app.get('/', controllers.index);
+app.get('/', function (req, res) {
+	res.sendFile(__dirname + '/public/404.html');
+});
+
+/*
+app.get('/test', function (req, res) {
+	res.sendFile(__dirname + '/public/404.html');
+});
+*/
 
 app.get('/private', function (req, res) {
 	res.sendFile(__dirname + '/public/private.html');
@@ -148,13 +133,22 @@ app.get('/404', function (req, res) {
 	res.sendFile(__dirname + '/public/404.html');
 });
 
+app.get('/getInfo', function (req, res) {
+	res.send(songInfo);
+	res.sendStatus(200);
+});
 
+app.get('/reg', function (req, res) {
+	res.sendFile(__dirname + '/public/register.html');
+});
 
-
+app.get('*', function (req, res) {
+	res.redirect('/404');
+});
 
 
 //Отправка songInfo
-app.get('/update', function(req, res){
+app.get('/update', function (req, res) {
 	console.log(req.query);
 	if (req.query.key === key) {
 		song_len = req.query.seconds;
@@ -186,18 +180,7 @@ app.get('/update', function(req, res){
 
 });
 
-app.get('/getInfo', function(req, res){
-	res.send(songInfo);
-	res.sendStatus(200);
-});
 
-app.get('/reg', function (req, res) {
-	res.sendFile(__dirname + '/public/login.html');
-});
-
-app.get('*', function(req, res){
-  res.redirect('/404');
-});
 
 
 
