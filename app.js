@@ -74,13 +74,14 @@ app.use(ua.tabletredirect(mobile_address, true)); //true
 
 
 app.use(session({
-	secret: 'secret',
-	resave: false,
-	saveUninitialized: false,
-	// Место хранения можно выбрать из множества вариантов, это и БД и файлы и Memcached.
-	store: new MongoStore({
-		url: 'mongodb://localhost:27017/users',
-	})
+    secret: 'secret',
+    cookie: {maxAge: 6000},
+    resave: true,
+    saveUninitialized: true,
+    // Место хранения можно выбрать из множества вариантов, это и БД и файлы и Memcached.
+    store: new MongoStore({
+        url: 'mongodb://localhost:27017/users'
+    })
 }));
 
 
@@ -98,26 +99,33 @@ server.listen(process.env.PORT || public_config.port, function () {
 
 
 app.use(express.static(__dirname + '/public'));
-
+app.get('/', controllers.index);
 app.get('/login', controllers.login);
-// app.post('/register', controllers.register);checkUser
+app.post('/register', controllers.register);
 app.get('/newuser', controllers.newuser);
 app.get('/checkUser', controllers.checkUser);
-app.get('/logout', controllers.logout)
+app.get('/logout', controllers.logout);
 app.get('/test', controllers.test);
+app.get('/radio', controllers.radio);
 app.all('private', mustAuthenticatedMw);
 app.all('private/*', mustAuthenticatedMw);
 
 function mustAuthenticatedMw(req, res, next) {
-	req.isAuthenticated()
-		? next()
-		: res.redirect('/');
+    if (req.isAuthenticated()) {
+        console.log("YES");
+        next()
+    } else {
+        console.log("NO");
+
+        res.redirect('/')
+    }
+
 }
 
 // app.get('/', controllers.index);
-app.get('/', function (req, res) {
-	res.sendFile(__dirname + '/public/404.html');
-});
+// app.get('/', function (req, res) {
+// 	res.sendFile(__dirname + '/public/404.html');
+// });
 
 /*
 app.get('/test', function (req, res) {
@@ -126,7 +134,7 @@ app.get('/test', function (req, res) {
 */
 
 app.get('/private', function (req, res) {
-	res.sendFile(__dirname + '/public/private.html');
+    res.sendFile(__dirname + '/public/private.html');
 });
 
 app.get('/404', function (req, res) {
@@ -134,61 +142,61 @@ app.get('/404', function (req, res) {
 });
 
 app.get('/getInfo', function (req, res) {
-	res.send(songInfo);
-	res.sendStatus(200);
+    res.send(songInfo);
+    res.sendStatus(200);
 });
 
 app.get('/reg', function (req, res) {
-	res.sendFile(__dirname + '/public/register.html');
+    res.sendFile(__dirname + '/public/register.html');
 });
 
-app.get('*', function (req, res) {
-	res.redirect('/404');
+
+app.get('/upload', function (req, res) {
+    res.sendFile(__dirname + '/public/upload.html');
 });
 
 
 //Отправка songInfo
 app.get('/update', function (req, res) {
-	console.log(req.query);
-	if (req.query.key === key) {
-		song_len = req.query.seconds;
-		songInfo = {
-			artist: req.query.artist, title: req.query.title
-		};
-		res.sendStatus(200);
-		getCover(req.query.artist, req.query.title);
-		try{
-			setTimeout(function(){
-				songInfo.coverUrl = coverUrl;
-				io.sockets.emit('infoUpdate', {
-				artist: songInfo.artist, title: songInfo.title, coverUrl: coverUrl
-			});
-			}, 2500)
+    // console.log(req.query);
+    if (req.query.key === key) {
+        song_len = req.query.seconds;
+        songInfo = {
+            artist: req.query.artist, title: req.query.title
+        };
+        // console.log("UPDATE");
+        res.sendStatus(200);
+        getCover(req.query.artist, req.query.title);
+        try {
+            setTimeout(function () {
+                songInfo.coverUrl = coverUrl;
+                io.sockets.emit('infoUpdate', {
+                    artist: songInfo.artist, title: songInfo.title, coverUrl: coverUrl
+                });
+            }, 2500)
 			
 		}
 		catch (err) {
 			console.log(err);
 		}
 
-	}
-	
-	else {
-		res.sendStatus(403);
-		console.log("Попытка внести некорректные данные");
-		console.log(req.query.key);
-	}
+    } else {
+        res.sendStatus(403);
+        console.log("Попытка внести некорректные данные");
+        // console.log(req.query.key);/
+    }
 
 });
 
+//ВСЕГДА ПОСЛЕДНИЙ
+app.get('*', function (req, res) {
+    res.redirect('/404');
+});
 
 
-
-
-
-
-io.sockets.on('connection', function(socket) {
-	const user = Chat.find({});
-	const query = Chat.find({});
+io.sockets.on('connection', function (socket) {
+    const user = Chat.find({});
+    const query = Chat.find({});
 
 	query.sort('-created').limit(20).exec(function (err, docs) {
 		if (err) {
@@ -262,15 +270,16 @@ function getCover(artist, title) {
 				console.log('URL: ' +  coverUrl);
 
 					try {
-						var file = fs.createWriteStream("/var/www/radio/toradio/public/images/artwork.png");
-						var request = https.get(coverUrl, function(response) {
-						  response.pipe(file);
-						  console.log("File created")
-						});
-					} 
+                        let file = fs.createWriteStream(config.artwork + "/artwork.png");
+                        let request = https.get(coverUrl, function (response) {
+                            response.pipe(file);
+                            console.log("File created")
+                        });
+                    }
 					catch(err) {
-						console.log(err);
-					}
+                        coverUrl = config.artwork + "/defualt.png";
+                        console.log(err);
+                    }
 
 
 

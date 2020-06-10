@@ -6,6 +6,7 @@
   "r_host": "localhost",
   "r_port": 8000,
   "mount": "/stream",
-
-  "secret_key": "testkey"
+  "secret_key": "testkey",
+  "artwork": "D:\\Универ\\ДИПЛОМ\\toradio\\public\\images",
+  "artworkL": "/var/www/radio/toradio/public/images"
 }

@@ -1,0 +1,57 @@
+<!-- MAIN -->
+
+<!DOCTYPE html>
+<html lang="ru-RU">
+<head>
+    <meta charset="UTF-8">
+    <title>PanHeadFM</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/favicon.png">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+</head>
+<body>
+       <div class="main">
+           <div class="header">
+               <div class="title">
+                   <center><h1>PanHeadFM</h1>
+                       <center/>
+               </div>
+               <div class="dj">
+                   <form action="/login" method="get">
+                       <input type="submit" class="button" id="dj" value="Войти">
+                   </form>
+               </div>
+           </div>
+        <div class="content">
+
+            <center>
+                <div class="player">
+                    <div class="cover">
+                        <div class="image">
+                            <img src="" id="cover" width="70%">
+                        </div>
+
+                    </div>
+                    <div class="songInfo">
+                        <div class="artist" id="artist"></div>
+                        <div class="song" id="title"></div>
+                    </div>
+                </div>
+            </center>
+        </div>
+
+           <div class="footer">
+               <div class="audioButtons">
+                   <img src="images/play.png" id="playBtn" onclick="playClick()">
+               </div>
+           </div>
+       </div>
+
+       <script src="src/radio.js"></script>
+       <script src="src/player.js"></script>
+
+
+</body>
+</html>
