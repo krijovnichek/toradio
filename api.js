@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const db = mongoose.connect("mongodb://localhost/users");
-let User = require('./db/models/User.js');
+let User = require('./db/models/user.js');
 
 // User API
 
