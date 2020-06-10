@@ -277,8 +277,8 @@ function getCover(artist, title) {
                         });
                     }
 					catch(err) {
-                        coverUrl = config.artwork + "/defualt.png";
-                        console.log(err);
+                        coverUrl = config.artworkL + "/default.png";
+						console.log(err);
                     }
 
 
