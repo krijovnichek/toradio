@@ -270,11 +270,11 @@ function getCover(artist, title) {
 				console.log('URL: ' +  coverUrl);
 
 					try {
-                        let file = fs.createWriteStream(config.artwork + "/artwork.png");
-                        let request = https.get(coverUrl, function (response) {
-                            response.pipe(file);
-                            console.log("File created")
-                        });
+                        let file = fs.createWriteStream(config.artworkL + "/artwork.png");
+						let request = https.get(coverUrl, function (response) {
+							response.pipe(file);
+							console.log("File created")
+						});
                     }
 					catch(err) {
                         coverUrl = config.artworkL + "/default.png";
