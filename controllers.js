@@ -3,6 +3,8 @@ const passport = require("passport");
 const mongoose = require('mongoose');
 let User = mongoose.model('User');
 const api = require('./api');
+const fileUpload = require('express-fileupload');
+
 
 
 module.exports.index = function (req, res, next) {
@@ -84,6 +86,11 @@ module.exports.checkUser = function (req, res, next) {
     })
 };
 
+module.exports.file_upload = function(req,res,next) {
+    console.log(req.files.foo);
+};
+
+
 module.exports.test = function (req, res, next) {
     if (req.session.user) {
 
@@ -105,4 +112,9 @@ module.exports.test = function (req, res, next) {
          res.render('index', data);*/
         res.redirect('/');
     }
+
+
+
 };
+
+

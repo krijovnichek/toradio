@@ -1,0 +1,76 @@
+<!-- MAIN -->
+
+<!DOCTYPE html>
+<html lang="ru-RU">
+<head>
+    <meta charset="UTF-8">
+    <title>to.radio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/favicon.png">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> 
+
+</head>
+<body>
+       <div class="main">
+        <div class="header">
+            <div class="title"><center><h1>to.radio</h1><center/></div>
+            <div class="dj">
+                <form action="/upload" method="get">
+                    <input type="submit" class="button" id="dj" value="Стать диджеем">
+                </form></div>
+        </div>
+        <div class="content">
+            <div class="chat">
+                <div class="messages" id="messages"></div>
+<!-- Форма ввода имени -->
+                <form class="input" id="userNameInput">
+                     <div class="inputText" id="inputUsername">   
+                        <input type="text" autocomplete="off" id="newUserName" maxlength="20" name="newUsername" placeholder="Впечатайте имя"></input>
+                        <input type="submit" class="button" id="subbut" value="ОК">
+                    </div>
+                </form>
+
+<!-- Форма ввода сообщения -->
+
+                <form class="input" id="input">
+                    <div class="inputText" id="inputText">   
+                        <textarea type="text" id="newMessage" name="newMessage" maxlength="140" placeholder="Напишите что-нибудь..."></textarea>
+                        <input type="submit" class="button" value="SEND">
+                    </div>
+                </form>
+<!-- Конец формы ввода сообщения -->
+
+            </div>
+            <div class="player">
+                <div class="cover">
+                    <div class="image">
+                        <img src="" id="cover" width="70%">
+                    </div> 
+                   
+                </div> 
+                <div class="songInfo">
+                    <div class="artist" id="artist"></div>
+                    <div class="song" id="title"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="audioButtons">
+               <img src="images/play.png" id="playBtn" onclick="playClick()">
+            </div>
+        </div>
+    </div>
+    
+    <script src="src/client.js"></script>
+    <script src="src/player.js"></script>
+    
+    
+   
+   
+   
+
+
+</body>
+</html>

@@ -22,11 +22,13 @@ const https = require('https');
 request = require('superagent');
 const superagentPromisePlugin = require('superagent-promise-plugin');
 const util = require('util');
+const multer  = require("multer");
 let coverUrl;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 let session = require('express-session')
 const MongoStore = require('connect-mongo')(session);
+
 
 let User = require('./db/models/user');
 
@@ -75,28 +77,21 @@ app.use(ua.tabletredirect(mobile_address, true)); //true
 
 app.use(session({
     secret: 'secret',
-    cookie: {maxAge: 6000},
-    resave: true,
-    saveUninitialized: true,
+    // cookie: {maxAge: 60000},
+    resave: false,
+    saveUninitialized: false,
     // Место хранения можно выбрать из множества вариантов, это и БД и файлы и Memcached.
     store: new MongoStore({
         url: 'mongodb://localhost:27017/users'
     })
 }));
 
-
-
-
 users = [];
 connections = [];
 
-server.listen(process.env.PORT || public_config.port, function () {
-	console.log('Start listening ' + public_config.host + ':' + +public_config.port);
-});
-
-
 // Коннектимся к БД
 
+const upload = multer({dest:"uploads"});
 
 app.use(express.static(__dirname + '/public'));
 app.get('/', controllers.index);
@@ -107,8 +102,10 @@ app.get('/checkUser', controllers.checkUser);
 app.get('/logout', controllers.logout);
 app.get('/test', controllers.test);
 app.get('/radio', controllers.radio);
+// app.post('file_upload', controllers.file_upload);
 app.all('private', mustAuthenticatedMw);
 app.all('private/*', mustAuthenticatedMw);
+
 
 function mustAuthenticatedMw(req, res, next) {
     if (req.isAuthenticated()) {
@@ -116,26 +113,9 @@ function mustAuthenticatedMw(req, res, next) {
         next()
     } else {
         console.log("NO");
-
         res.redirect('/')
     }
-
 }
-
-// app.get('/', controllers.index);
-// app.get('/', function (req, res) {
-// 	res.sendFile(__dirname + '/public/404.html');
-// });
-
-/*
-app.get('/test', function (req, res) {
-	res.sendFile(__dirname + '/public/404.html');
-});
-*/
-
-app.get('/private', function (req, res) {
-    res.sendFile(__dirname + '/public/private.html');
-});
 
 app.get('/404', function (req, res) {
 	res.sendFile(__dirname + '/public/404.html');
@@ -150,9 +130,18 @@ app.get('/reg', function (req, res) {
     res.sendFile(__dirname + '/public/register.html');
 });
 
-
 app.get('/upload', function (req, res) {
     res.sendFile(__dirname + '/public/upload.html');
+});
+app.post("/upload", upload.single("filedata"), function (req, res, next) {
+
+	let filedata = req.file;
+
+	console.log(filedata);
+	if(!filedata)
+		res.send("Ошибка при загрузке файла");
+	else
+		res.send("Файл загружен");
 });
 
 
@@ -270,14 +259,14 @@ function getCover(artist, title) {
 				console.log('URL: ' +  coverUrl);
 
 					try {
-                        let file = fs.createWriteStream(config.artworkL + "/artwork.png");
+                        let file = fs.createWriteStream(config.artwork + "/artwork.png");
 						let request = https.get(coverUrl, function (response) {
 							response.pipe(file);
 							console.log("File created")
 						});
                     }
 					catch(err) {
-                        coverUrl = config.artworkL + "/default.png";
+                        coverUrl = config.artwork + "/default.png";
 						console.log(err);
                     }
 
@@ -300,7 +289,9 @@ function getCover(artist, title) {
 
 
 
-
+server.listen(process.env.PORT || public_config.port, function () {
+	console.log('Start listening ' + public_config.host + ':' + +public_config.port);
+});
 
 //APP2 HERE
 
@@ -308,7 +299,9 @@ server2.listen(process.env.PORT || public_config.mobile_port, function(){
 	console.log('Start listening '+ config.mobile_port +'...');
 } );
 app2.use(ua.is_mobile()); // Detects mobiles and sets req.is_mobile 
-app2.use(ua.is_tablet()); // Detects tablets and sets req.is_tablet 
+app2.use(ua.is_tablet()); // Detects tablets and sets req.is_tablet
+
+
 app2.use(express.static(__dirname + '/public'));
 // app2.use(express.static(path.join(__dirname, 'public')))
 app2.get('/', function(req, res) {

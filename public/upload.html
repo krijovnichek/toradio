@@ -21,7 +21,7 @@
 
 
         <div class="form">
-            <form action="#">
+            <!--<form action="http://localhost:3000/upload" method="post" encType="multipart/form-data">
                 <label for="podcast"><h3>НАЗВАНИЕ</h3></label>
                 <input type="text" id="podcast"> <br>
                 <label for="discription"><h3>ОПИСАНИЕ</h3></label>
@@ -30,9 +30,15 @@
                 <input type="text" name="genre">
                 <Br>
                 <center><label id="uplLbl" for="check4">ЗАГРУЗИТЬ</label></center>
-                <input type="file" id="check4">
+&lt;!&ndash;                <input type="file" id="check4">&ndash;&gt;
+                <input type="submit">
 
+            </form>-->
 
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <label>Файл</label><br>
+                <input type="file" name="filedata" /><br><br>
+                <input type="submit" value="Send" />
             </form>
         </div>
 

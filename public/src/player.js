@@ -4,26 +4,20 @@ let audio = new Audio();
 // let stream = "http://194.67.113.125:8000/stream"; //SERVER
 let stream = "http://localhost:8000/stream"; //LOCALHOST
 
-
 function ready() {
 
 }
-
 document.addEventListener("DOMContentLoaded", ready);
-
 function audioStop() {
     audio.pause();
     Btn.setAttribute("src", "images/play.png");
     Btn.setAttribute("id", "playBtn");
     Btn.setAttribute("onclick", "playClick()");
 }
-
 function playClick() {
     audio.src = stream;
     Btn.setAttribute("src", "images/stop.png");
     // Логика плеера
-
-
     let playPromise = audio.play();
     if (playPromise !== undefined) {
         playPromise.then(function() {
