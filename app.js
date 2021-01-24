@@ -6,8 +6,8 @@ const app = express();
 const app2 = express();
 const server = require('http').createServer(app);
 const server2 = require('http').createServer(app2);
-const io = require('socket.io').listen(server);
-const io2 = require('socket.io').listen(server2);
+const io = require('socket.io')(server);
+const io2 = require('socket.io')(server2);
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 let url = require('url');
@@ -259,14 +259,14 @@ function getCover(artist, title) {
 				console.log('URL: ' +  coverUrl);
 
 					try {
-                        let file = fs.createWriteStream(config.artwork + "/artwork.png");
+                        let file = fs.createWriteStream(config.artworkL + "/artwork.png");
 						let request = https.get(coverUrl, function (response) {
 							response.pipe(file);
 							console.log("File created")
 						});
                     }
 					catch(err) {
-                        coverUrl = config.artwork + "/default.png";
+                        coverUrl = config.artworkL + "/default.png";
 						console.log(err);
                     }
 
@@ -311,8 +311,9 @@ app2.get('/', function(req, res) {
 
 
 app2.get('/update', function(req, res){
+	
 	if (req.query.key === key) {
-
+		console.log(req.query.artist);
 		song_len = req.query.seconds;
 		songInfo = {artist: req.query.artist, title: req.query.title};
 		console.log(songInfo);
@@ -324,6 +325,8 @@ app2.get('/update', function(req, res){
 				io2.sockets.emit('infoUpdate', {
 				artist: songInfo.artist, title: songInfo.title, coverUrl: coverUrl
 			});
+			console.log("Message Emitted");
+
 			}, 2500)
 			
 		}

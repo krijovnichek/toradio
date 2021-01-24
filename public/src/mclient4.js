@@ -1,11 +1,21 @@
 //MCLIENT 2.0
 
 $(function () {
-    const config = require('./public_config');
+
+
+    const config = {
+        "host": "http://212.109.193.106",
+        "port": 3000,
+        "mobile_host": "http://212.109.193.106",
+        "mobile_port": 3001,
+        "r_host": "localhost",
+        "r_port": 8000,
+        "mount": "/stream"
+      }
 
     const host = config.host;
-    const port = config.port;
-    let socket = io(host+port);
+    const port = config.mobile_port;
+    let socket = io(host+port, {'transports': ['websocket', 'polling']});
     socket = io.connect();
     const $input = $('#input');
     const $sendbtn = $('#sendbtn');
